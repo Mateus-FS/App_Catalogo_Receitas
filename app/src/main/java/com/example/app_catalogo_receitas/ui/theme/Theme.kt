@@ -1,6 +1,5 @@
-package com.example.app_receita_catalogo.ui.theme
+package com.example.app_catalogo_receitas.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

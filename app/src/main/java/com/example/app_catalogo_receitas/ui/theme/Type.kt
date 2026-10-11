@@ -1,4 +1,4 @@
-package com.example.app_receita_catalogo.ui.theme
+package com.example.app_catalogo_receitas.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,11 +1,11 @@
-package com.example.app_receita_catalogo.model
+package com.example.app_catalogo_receitas.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Recipe(
+data class Receita(
     val id: Int,
     val titulo: String,
     val descricao: String,
