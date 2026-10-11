@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "App_Receita_Catalogo"
+rootProject.name = "App_Catalogo_Receita"
 include(":app")
  

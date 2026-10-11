@@ -1,4 +1,4 @@
-package com.example.app_receita_catalogo
+package com.example.app_catalogo_receitas
 
 import org.junit.Test
 
