@@ -25,7 +25,11 @@ object Receitas {
                 "Misture com o açúcar e a farinha.",
                 "Adicione o fermento e asse por 40 minutos."
             ),
-            imagem = img
+            imagem = img,
+            categoria = "Doces",
+            tempo = "50 min",
+            dificuldade = "Fácil",
+            porcoes = 8
         ),
         Receita(
             id = 2,
@@ -43,7 +47,11 @@ object Receitas {
                 "Doure o alho fatiado no azeite.",
                 "Misture tudo e finalize com salsinha."
             ),
-            imagem = img
+            imagem = img,
+            categoria = "Massas",
+            tempo = "20 min",
+            dificuldade = "Fácil",
+            porcoes = 2
         ),
         Receita(
             id = 3,
@@ -60,7 +68,11 @@ object Receitas {
                 "Frite uma concha da massa em frigideira untada.",
                 "Vire quando dourar e sirva."
             ),
-            imagem = img
+            imagem = img,
+            categoria = "Café da manhã",
+            tempo = "15 min",
+            dificuldade = "Fácil",
+            porcoes = 4
         )
     )
 

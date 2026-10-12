@@ -1,30 +1,31 @@
 package com.example.app_catalogo_receitas.ui.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.app_catalogo_receitas.model.Receita
+import com.example.app_catalogo_receitas.ui.theme.Favorito
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReceitaCard(
     receita: Receita,
@@ -33,35 +34,51 @@ fun ReceitaCard(
     onToggleFavorito: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // "50 min · Fácil" (se não houver tempo/dificuldade, mostra a descrição)
+    val detalhes = listOf(receita.tempo, receita.dificuldade)
+        .filter { it.isNotBlank() }
+        .joinToString(" · ")
+        .ifEmpty { receita.descricao }
+
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 0 significa "sem imagem": evita crash do painterResource
-            if (receita.imagem != 0) {
-                Image(
-                    painter = painterResource(id = receita.imagem),
-                    contentDescription = receita.titulo,
-                    modifier = Modifier.size(72.dp)
-                )
-                Spacer(Modifier.width(12.dp))
-            }
+            MiniaturaReceita(categoria = receita.categoria)
+            Spacer(Modifier.width(14.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(receita.titulo, style = MaterialTheme.typography.titleMedium)
-                Text(receita.descricao, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = receita.titulo,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = detalhes,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                if (receita.categoria.isNotBlank()) {
+                    Text(
+                        text = receita.categoria,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
 
             IconButton(onClick = onToggleFavorito) {
                 Icon(
                     imageVector = if (favorita) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                     contentDescription = if (favorita) "Remover dos favoritos" else "Adicionar aos favoritos",
-                    tint = if (favorita) MaterialTheme.colorScheme.error else LocalContentColor.current
+                    tint = if (favorita) Favorito else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
