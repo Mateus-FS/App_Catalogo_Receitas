@@ -1,7 +1,9 @@
 package com.example.app_catalogo_receitas
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
@@ -23,7 +25,11 @@ import com.example.app_catalogo_receitas.ui.theme.AppCatalogoReceitaTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        // O app usa tema claro: ícones escuros na barra de status e na de navegação
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+        )
         setContent {
             AppCatalogoReceitaTheme {
                 val navController = rememberNavController()
@@ -40,6 +46,21 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
+                // Abas da barra inferior: voltam até a lista antes de abrir o destino,
+                // assim a pilha de telas não cresce a cada toque
+                val irParaReceitas: () -> Unit = {
+                    navController.navigate("lista") {
+                        popUpTo("lista")
+                        launchSingleTop = true
+                    }
+                }
+                val irParaFavoritas: () -> Unit = {
+                    navController.navigate("favoritas") {
+                        popUpTo("lista")
+                        launchSingleTop = true
+                    }
+                }
+
                 NavHost(navController = navController, startDestination = "lista") {
                     composable("lista") {
                         ListaReceitasScreen(
@@ -47,7 +68,7 @@ class MainActivity : ComponentActivity() {
                             favoritos = favoritos,
                             onReceitaClick = { navController.navigate("detalhe/${it.id}") },
                             onToggleFavorito = alternarFavorito,
-                            onFavoritasClick = { navController.navigate("favoritas") }
+                            onFavoritasClick = irParaFavoritas
                         )
                     }
                     composable("favoritas") {
@@ -55,7 +76,7 @@ class MainActivity : ComponentActivity() {
                             favoritas = Receitas.receitas.filter { it.id in favoritos },
                             onReceitaClick = { navController.navigate("detalhe/${it.id}") },
                             onToggleFavorito = alternarFavorito,
-                            onVoltar = { navController.popBackStack() }
+                            onReceitasClick = irParaReceitas
                         )
                     }
                     composable(
@@ -67,7 +88,11 @@ class MainActivity : ComponentActivity() {
                         if (receita != null) {
                             DetalhesReceitaScreen(
                                 receita = receita,
-                                onVoltar = { navController.popBackStack() }
+                                onVoltar = { navController.popBackStack() },
+                                favorita = receita.id in favoritos,
+                                onToggleFavorito = { alternarFavorito(receita) },
+                                onReceitasClick = irParaReceitas,
+                                onFavoritosClick = irParaFavoritas
                             )
                         }
                     }

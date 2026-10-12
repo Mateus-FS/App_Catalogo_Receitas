@@ -12,5 +12,9 @@ data class Receita(
     val ingredientes: List<String>,
     val passos: List<String>,
     @DrawableRes val imagem: Int,
-    val favorito: Boolean = false
+    val favorito: Boolean = false,
+    val categoria: String = "",
+    val tempo: String = "",
+    val dificuldade: String = "",
+    val porcoes: Int = 0
 ) : Parcelable
