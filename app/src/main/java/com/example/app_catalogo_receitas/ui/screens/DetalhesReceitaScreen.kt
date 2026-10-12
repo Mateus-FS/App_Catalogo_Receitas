@@ -1,4 +1,4 @@
-package com.example.app_receita_catalogo.ui.theme.detalhes
+package com.example.app_catalogo_receitas.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -25,14 +25,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.app_receita_catalogo.R
-import com.example.app_receita_catalogo.model.Recipe
-import com.example.app_receita_catalogo.ui.theme.App_Receita_CatalogoTheme
+import com.example.app_catalogo_receitas.R
+import com.example.app_catalogo_receitas.model.Receita
+import com.example.app_catalogo_receitas.ui.theme.AppCatalogoReceitaTheme
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReceitaScreen(
-    recipe: Recipe,
+fun DetalhesReceitaScreen(
+    receita: Receita,
     onVoltar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -58,11 +59,10 @@ fun ReceitaScreen(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
         ) {
-            // 0 significa "sem imagem": evita crash do painterResource
-            if (recipe.imagem != 0) {
+            if (receita.imagem != 0) {
                 Image(
-                    painter = painterResource(id = recipe.imagem),
-                    contentDescription = recipe.titulo,
+                    painter = painterResource(id = receita.imagem),
+                    contentDescription = receita.titulo,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -75,11 +75,11 @@ fun ReceitaScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = recipe.titulo,
+                    text = receita.titulo,
                     style = MaterialTheme.typography.headlineMedium
                 )
                 Text(
-                    text = recipe.descricao,
+                    text = receita.descricao,
                     style = MaterialTheme.typography.bodyLarge
                 )
 
@@ -89,7 +89,7 @@ fun ReceitaScreen(
                     text = "Ingredientes",
                     style = MaterialTheme.typography.titleLarge
                 )
-                recipe.ingredientes.forEach { ingrediente ->
+                receita.ingredientes.forEach { ingrediente ->
                     Text(
                         text = "• $ingrediente",
                         style = MaterialTheme.typography.bodyLarge
@@ -102,7 +102,7 @@ fun ReceitaScreen(
                     text = "Modo de preparo",
                     style = MaterialTheme.typography.titleLarge
                 )
-                recipe.passos.forEachIndexed { indice, passo ->
+                receita.passos.forEachIndexed { indice, passo ->
                     Text(
                         text = "${indice + 1}. $passo",
                         style = MaterialTheme.typography.bodyLarge
@@ -115,10 +115,10 @@ fun ReceitaScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun ReceitaScreenPreview() {
-    App_Receita_CatalogoTheme {
-        ReceitaScreen(
-            recipe = Recipe(
+private fun DetalhesReceitaScreenPreview() {
+    AppCatalogoReceitaTheme {
+        DetalhesReceitaScreen(
+            receita = Receita(
                 id = 1,
                 titulo = "Bolo de Cenoura",
                 descricao = "Bolo fofinho de cenoura com cobertura de chocolate.",
