@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.app_catalogo_receitas.data.Receitas
+import com.example.app_catalogo_receitas.data.ReceitasDataSource
 import com.example.app_catalogo_receitas.model.Receita
 import com.example.app_catalogo_receitas.ui.components.Aba
 import com.example.app_catalogo_receitas.ui.components.BarraNavegacao
@@ -113,7 +113,7 @@ fun ReceitasFavoritasScreen(
 private fun ReceitasFavoritasScreenPreview() {
     AppCatalogoReceitaTheme {
         ReceitasFavoritasScreen(
-            favoritas = Receitas.receitas.take(1),
+            favoritas = ReceitasDataSource.receitas.take(1),
             onReceitaClick = {},
             onToggleFavorito = {},
             onReceitasClick = {}

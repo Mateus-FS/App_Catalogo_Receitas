@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.app_catalogo_receitas.R
+import com.example.app_catalogo_receitas.model.Categoria
 import com.example.app_catalogo_receitas.model.Receita
 import com.example.app_catalogo_receitas.ui.components.Aba
 import com.example.app_catalogo_receitas.ui.components.BarraNavegacao
@@ -128,13 +128,11 @@ fun DetalhesReceitaScreen(
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                if (receita.categoria.isNotBlank()) {
-                    Text(
-                        text = receita.categoria,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
+                Text(
+                    text = receita.categoria.titulo,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
                 Text(
                     text = receita.titulo,
                     style = MaterialTheme.typography.headlineMedium,
@@ -228,8 +226,7 @@ private fun DetalhesReceitaScreenPreview() {
                     "Misture com o açúcar e a farinha.",
                     "Asse em forno médio por 40 minutos."
                 ),
-                imagem = R.drawable.ic_launcher_foreground,
-                categoria = "Doces",
+                categoria = Categoria.DOCES,
                 tempo = "50 min",
                 dificuldade = "Fácil",
                 porcoes = 8

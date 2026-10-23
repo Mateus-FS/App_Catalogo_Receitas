@@ -65,13 +65,11 @@ fun ReceitaCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                if (receita.categoria.isNotBlank()) {
-                    Text(
-                        text = receita.categoria,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
+                Text(
+                    text = receita.categoria.titulo,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
 
             IconButton(onClick = onToggleFavorito) {

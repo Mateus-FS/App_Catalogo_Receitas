@@ -29,15 +29,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.app_catalogo_receitas.data.Receitas
+import com.example.app_catalogo_receitas.data.ReceitasDataSource
+import com.example.app_catalogo_receitas.model.Categoria
 import com.example.app_catalogo_receitas.model.Receita
 import com.example.app_catalogo_receitas.ui.components.Aba
 import com.example.app_catalogo_receitas.ui.components.BarraNavegacao
 import com.example.app_catalogo_receitas.ui.components.ChipCategoria
 import com.example.app_catalogo_receitas.ui.components.ReceitaCard
 import com.example.app_catalogo_receitas.ui.theme.AppCatalogoReceitaTheme
-
-private const val TODAS = "Todas"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,17 +49,14 @@ fun ListaReceitasScreen(
     modifier: Modifier = Modifier
 ) {
     var busca by rememberSaveable { mutableStateOf("") }
-    var categoriaSelecionada by rememberSaveable { mutableStateOf(TODAS) }
+    var categoriaSelecionada by rememberSaveable { mutableStateOf<Categoria?>(null) }
 
-    // Chips: "Todas" + as categorias que existirem nas receitas
-    val categorias = listOf(TODAS) + receitas
-        .map { it.categoria }
-        .filter { it.isNotBlank() }
-        .distinct()
+// Chips: "Todas" + as categorias que existirem nas receitas
+    val categorias = receitas.map { it.categoria }.distinct()
 
     val termo = busca.trim()
     val filtradas = receitas.filter { receita ->
-        val bateCategoria = categoriaSelecionada == TODAS || receita.categoria == categoriaSelecionada
+        val bateCategoria = categoriaSelecionada == null || receita.categoria == categoriaSelecionada
         val bateBusca = termo.isEmpty() ||
                 receita.titulo.contains(termo, ignoreCase = true) ||
                 receita.ingredientes.any { it.contains(termo, ignoreCase = true) }
@@ -123,9 +119,14 @@ fun ListaReceitasScreen(
                     modifier = Modifier.horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
+                    ChipCategoria(
+                        texto = "Todas",
+                        selecionado = categoriaSelecionada == null,
+                        onClick = { categoriaSelecionada = null }
+                    )
                     categorias.forEach { categoria ->
                         ChipCategoria(
-                            texto = categoria,
+                            texto = categoria.titulo,
                             selecionado = categoria == categoriaSelecionada,
                             onClick = { categoriaSelecionada = categoria }
                         )
@@ -161,7 +162,7 @@ fun ListaReceitasScreen(
 private fun ListaReceitasScreenPreview() {
     AppCatalogoReceitaTheme {
         ListaReceitasScreen(
-            receitas = Receitas.receitas,
+            receitas = ReceitasDataSource.receitas,
             favoritos = setOf(1),
             onReceitaClick = {},
             onToggleFavorito = {},
